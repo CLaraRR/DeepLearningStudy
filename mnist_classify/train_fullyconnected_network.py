@@ -3,7 +3,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 import pylab
 
 # 使用one-hot编码的标签
-mnist = input_data.read_data_sets("./mnist_classify/MNIST_data/", one_hot = True)
+mnist = input_data.read_data_sets("./MNIST_data/", one_hot = True)
 
 tf.reset_default_graph()
 
@@ -54,7 +54,7 @@ batch_size = 100
 display_step = 1
 
 saver = tf.train.Saver(max_to_keep= 1)
-savedir = "./mnist_classify/model_fc/"
+savedir = "./model_fc/"
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     # 启动循环开始训练

@@ -102,7 +102,7 @@ for epoch in range(training_epochs):
     if epoch % display_step == 0:
         training_accuracy = accuracy.eval(feed_dict = {X: image_batch, Y: label_b}, session = sess)
         print("step %d, accuracy:%g" % (epoch, training_accuracy))
-    saver.save(sess, savedir + "cnn_cifar10.ckpt", global_step = epoch + 1)
+    # saver.save(sess, savedir + "cnn_cifar10.ckpt", global_step = epoch + 1)
     
 
 print("finished training!!!")

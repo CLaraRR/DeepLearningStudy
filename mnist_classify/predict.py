@@ -2,7 +2,7 @@ import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 import pylab
 
-mnist = input_data.read_data_sets("./mnist_classify/MNIST_data/", one_hot = True)
+mnist = input_data.read_data_sets("./MNIST_data/", one_hot = True)
 
 
 # 定义正向传播的结构
@@ -18,7 +18,7 @@ pred = tf.nn.softmax(tf.matmul(x, W) + b)  # softmax分类
 
 # 载入模型进行图像类别预测
 saver = tf.train.Saver()
-savedir = "./mnist_classify/model"
+savedir = "./model"
 with tf.Session() as sess:
     # 当保存的是某次迭代后得到的模型（训练中断保存了检查点）,载入该模型
     ckpt = tf.train.latest_checkpoint(savedir)  # 得到中断时所保存的checkpoint

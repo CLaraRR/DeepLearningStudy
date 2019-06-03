@@ -11,7 +11,7 @@ import pylab
 
 
 # 使用one-hot编码的标签
-mnist = input_data.read_data_sets("./mnist_classify/MNIST_data/", one_hot = True)
+mnist = input_data.read_data_sets("./MNIST_data/", one_hot = True)
 
 # im = mnist.train.images[1]
 # im = im.reshape(-1, 28)
@@ -93,7 +93,7 @@ training_epochs = 20000  # 迭代次数
 batch_size = 50  # 训练过程中一次取多少条数据进行训练，一批次多少条数据
 display_step = 2  # 没训练一次就把具体的中间状态显示出来
 saver = tf.train.Saver(max_to_keep= 1)
-savedir = "./mnist_classify/model_cnn/"
+savedir = "./model_cnn/"
 with tf.Session() as sess:
     sess.run(init)
     # 启动循环开始训练
@@ -105,7 +105,7 @@ with tf.Session() as sess:
         if (epoch + 1) % display_step == 0:
             training_accuracy = accuracy.eval(feed_dict = {X: batch_xs, Y: batch_ys}, session = sess)
             print("step %d, accuracy:%g" % (epoch, training_accuracy))
-        saver.save(sess, savedir + "cnn_mnist.ckpt", global_step = epoch + 1)
+        # saver.save(sess, savedir + "cnn_mnist.ckpt", global_step = epoch + 1)
     print("Finished!!!")
     # 测试模型
     print ("test accuracy: %g" % accuracy.eval(feed_dict = {X: mnist.test.images, Y: mnist.test.labels}))

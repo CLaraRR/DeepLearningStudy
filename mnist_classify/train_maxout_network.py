@@ -12,7 +12,7 @@ warnings.filterwarnings('ignore')
 
 
 # 使用非ont-hot编码的标签
-mnist = input_data.read_data_sets("./mnist_classify/MNIST_data/")
+mnist = input_data.read_data_sets("./MNIST_data/")
 
 # im = mnist.train.images[1]
 # im = im.reshape(-1, 28)
@@ -77,7 +77,7 @@ training_epochs = 200  # 迭代次数
 batch_size = 100  # 训练过程中一次取多少条数据进行训练，一批次多少条数据
 display_step = 2  # 没训练一次就把具体的中间状态显示出来
 saver = tf.train.Saver(max_to_keep= 1)
-savedir = "./mnist_classify/model_maxout/"
+savedir = "./model_maxout/"
 with tf.Session() as sess:
     sess.run(init)
     # 启动循环开始训练

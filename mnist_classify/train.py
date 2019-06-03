@@ -9,7 +9,7 @@ import pylab
 
 
 # 使用one-hot编码的标签
-mnist = input_data.read_data_sets("./mnist_classify/MNIST_data/", one_hot = True)
+mnist = input_data.read_data_sets("./MNIST_data/", one_hot = True)
 
 # im = mnist.train.images[1]
 # im = im.reshape(-1, 28)
@@ -51,7 +51,7 @@ training_epochs = 25  # 迭代次数
 batch_size = 100  # 训练过程中一次取多少条数据进行训练，一批次多少条数据
 display_step = 1  # 没训练一次就把具体的中间状态显示出来
 saver = tf.train.Saver(max_to_keep= 1)
-savedir = "./mnist_classify/model/"
+savedir = "./model/"
 with tf.Session() as sess:
     sess.run(init)
     # 启动循环开始训练
@@ -68,7 +68,7 @@ with tf.Session() as sess:
         # 显示每一次训练完后的详细信息
         if (epoch + 1) % display_step == 0:
             print("Epoch:", epoch + 1, "cost=", avg_cost)
-        saver.save(sess, savedir + "softmax_mnist.ckpt", global_step = epoch + 1)
+        # saver.save(sess, savedir + "softmax_mnist.ckpt", global_step = epoch + 1)
     print("Finished!!!")
     # 测试模型
     correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))  # tf.argmax返回onehot编码中数值为1的那个元素的下标，也就是类别，tf.equal函数判断两个数是否相等,若相等则返回1，否则返回0
