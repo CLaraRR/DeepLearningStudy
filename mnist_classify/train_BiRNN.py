@@ -1,8 +1,6 @@
 """
-1.static_rnn + BasicLSTMCell
-2.static_rnn + LSTMCell
-3.static_rnn + GRU
-4.dynamic_rnn + GRU
+1.single bidirectional dynamic rnn
+2.single bidirectional static rnn
 
 """
 import tensorflow as tf
@@ -22,24 +20,20 @@ Y = tf.placeholder(tf.float32, [None, n_classes])
 
 x1 = tf.unstack(X, n_steps, 1)
 
-print(x1[0])
 
-#1.BasicLSTMCell
-lstm_cell = tf.contrib.rnn.BasicLSTMCell(n_hidden, forget_bias = 1.0)  # forget gate的bias初始为1.0
-outputs, states = tf.contrib.rnn.static_rnn(lstm_cell, x1, dtype = tf.float32)
+lstm_fw_cell = tf.contrib.rnn.BasicLSTMCell(n_hidden, forget_bias = 1.0)  # forget gate的bias初始为1.0
+lstm_bw_cell = tf.contrib.rnn.BasicLSTMCell(n_hidden, forget_bias = 1.0)
+
+# 1.bidirectional dynamic rnn
+# outputs, states = tf.nn.bidirectional_dynamic_rnn(lstm_fw_cell, lstm_bw_cell, X, dtype = tf.float32)
+# outputs = tf.concat(outputs, 2)
+# outputs = tf.transpose(outputs, [1, 0, 2])
 
 
-#2.LSTMCell
-# lstm_cell = tf.contrib.rnn.LSTMCell(n_hidden, forget_bias = 1.0)
-# outputs, states = tf.contrib.rnn.static_rnn(lstm_cell, x1, dtype = tf.float32)
+# 2.bidirectional static rnn
+outputs, _, _ = tf.contrib.rnn.static_bidirectional_rnn(lstm_fw_cell, lstm_bw_cell, x1, dtype = tf.float32)
 
-#3.GRU
-#gru = tf.contrib.rnn.GRUCell(n_hidden)
-#outputs = tf.contrib.rnn.static_rnn(gru, x1, dtype = tf.float32)
 
-#4.创建动态RNN
-#outputs, _  = tf.nn.dynamic_rnn(gru, X, dtype = tf.float32)
-#outputs = tf.transpose(outputs, [1, 0, 2])  # 使用动态RNN后得到的output一定要transpose一下
 
 
 pred = tf.contrib.layers.fully_connected(outputs[-1], n_classes, activation_fn = None)  # outputs[-1]为时间序列的最后一个输出，shape:(batch_size, ...)

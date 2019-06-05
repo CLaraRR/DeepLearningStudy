@@ -1,12 +1,11 @@
 """
-1.static_rnn + BasicLSTMCell
-2.static_rnn + LSTMCell
-3.static_rnn + GRU
-4.dynamic_rnn + GRU
+1.static_rnn + multiLSTMCell
+1.dynamic_rnn + multiLSTMCell
 
 """
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
+
 
 # 使用one-hot编码的标签
 mnist = input_data.read_data_sets("./MNIST_data/", one_hot = True)
@@ -24,23 +23,20 @@ x1 = tf.unstack(X, n_steps, 1)
 
 print(x1[0])
 
-#1.BasicLSTMCell
-lstm_cell = tf.contrib.rnn.BasicLSTMCell(n_hidden, forget_bias = 1.0)  # forget gate的bias初始为1.0
-outputs, states = tf.contrib.rnn.static_rnn(lstm_cell, x1, dtype = tf.float32)
+# 用一个循环建立3个LSTM的cell放在list列表变量stacked_rnn里
+stacked_rnn = []
+for i in range(3):
+    stacked_rnn.append(tf.contrib.rnn.LSTMCell(n_hidden))
 
+# 实例化MultiRNNCell对象得到mcell
+mcell = tf.contrib.rnn.MultiRNNCell(stacked_rnn)
 
-#2.LSTMCell
-# lstm_cell = tf.contrib.rnn.LSTMCell(n_hidden, forget_bias = 1.0)
-# outputs, states = tf.contrib.rnn.static_rnn(lstm_cell, x1, dtype = tf.float32)
+# 1.use static rnn
+# outputs, states = tf.contrib.rnn.static_rnn(mcell, x1, dtype = tf.float32)
 
-#3.GRU
-#gru = tf.contrib.rnn.GRUCell(n_hidden)
-#outputs = tf.contrib.rnn.static_rnn(gru, x1, dtype = tf.float32)
-
-#4.创建动态RNN
-#outputs, _  = tf.nn.dynamic_rnn(gru, X, dtype = tf.float32)
-#outputs = tf.transpose(outputs, [1, 0, 2])  # 使用动态RNN后得到的output一定要transpose一下
-
+# 2.use dynamic rnn
+outputs, states = tf.nn.dynamic_rnn(mcell, X, dtype = tf.float32)
+outputs = tf.transpose(outputs, [1, 0, 2])
 
 pred = tf.contrib.layers.fully_connected(outputs[-1], n_classes, activation_fn = None)  # outputs[-1]为时间序列的最后一个输出，shape:(batch_size, ...)
 
