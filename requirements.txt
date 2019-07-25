@@ -1,0 +1,12 @@
+numpy
+tensorflow
+scikit-learn
+scipy
+matplotlib
+IPython
+keras
+jieba
+gensim
+pandas
+Pillow
+python_speech_features
