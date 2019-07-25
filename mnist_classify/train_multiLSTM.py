@@ -36,7 +36,7 @@ mcell = tf.contrib.rnn.MultiRNNCell(stacked_rnn)
 
 # 2.use dynamic rnn
 outputs, states = tf.nn.dynamic_rnn(mcell, X, dtype = tf.float32)
-outputs = tf.transpose(outputs, [1, 0, 2])
+outputs = tf.transpose(outputs, [1, 0, 2]) # 使用dynamic_rnn一定要加上这一句
 
 pred = tf.contrib.layers.fully_connected(outputs[-1], n_classes, activation_fn = None)  # outputs[-1]为时间序列的最后一个输出，shape:(batch_size, ...)
 
