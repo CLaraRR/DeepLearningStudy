@@ -1,3 +1,7 @@
+'''
+通过sin与cos进行叠加变形生成无规律的模拟曲线，使用seq2seq模式对其进行学习，
+拟合特征，从而达到可以预测下一时刻数据的效果
+'''
 import random
 import math
 
